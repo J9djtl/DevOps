@@ -9,7 +9,7 @@ def create_database():
     connection = psycopg2.connect(
         dbname='postgres',  # Подключаемся к базе данных по умолчанию
         user='postgres',
-        password='YUSYA', ## было vlad
+        password='YUSYA',
         host='localhost',
         port='5432'
     )
@@ -33,7 +33,7 @@ create_database()
 conn = psycopg2.connect(
     dbname="mydatabase",
     user="postgres",
-    password="YUSYA", ## было vlad
+    password="YUSYA",
     host="localhost",
     port="5432"
 )
