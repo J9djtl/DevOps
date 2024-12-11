@@ -1,38 +1,38 @@
 name: Python Web Application CI
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
+  push: #процесс будет запущен при каждом push (отправке изменений) в репозиторий
+    branches: [ "main" ] #триггер срабатывает только для ветки main.
+  pull_request: #при создании или обновлении pull request'ов
     branches: [ "main" ]
 
 jobs:
-  build-and-test:
-    runs-on: ubuntu-latest
+  build-and-test: #отвечает за сборку и тестирование приложения
+    runs-on: ubuntu-latest #задача будет выполняться на последней версии Ubuntu, предоставляемой GitHub Actions
 
-    services:
+    services: #Определяет сервисы (внешние зависимости), которые будут доступны во время выполнения задачи
       postgres:
         image: postgres:16
         env:
           POSTGRES_PASSWORD: YUSYA
-          POSTGRES_DB: mydatabase
+          POSTGRES_DB: mydatabase #Создает базу данных
         ports:
           - 5432:5432
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5 # доп параметры для запуска контейнера
 
-    steps:
-    - uses: actions/checkout@v4
+    steps: 
+    - uses: actions/checkout@v4 #проверка (клон) кода из репозитория
     - name: Set up Python 3.10
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v3 #установка интерпретатора Python
       with:
         python-version: "3.10"
     
-    - name: Install dependencies
+    - name: Install dependencies # установка зависимостей проекта
       run: |
         python -m pip install --upgrade pip
         pip install flake8 pytest Flask psycopg2
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    
+      # читает содержимое файла index.html и проверяет на валидность с помощью html5lib
     - name: Check HTML validity
       run: |
         pip install html5lib
@@ -40,7 +40,7 @@ jobs:
     
     - name: Test application
       env:
-        POSTGRES_HOST: localhost
+        POSTGRES_HOST: localhost # Задают хост и порт для подключения к бд PostgreSQL
         POSTGRES_PORT: 5432
       run: |
         python -c "
@@ -53,5 +53,5 @@ jobs:
         "
         python git_app.py &
         sleep 5
-        curl http://localhost:5000
+        curl http://localhost:5000 
         kill $!
