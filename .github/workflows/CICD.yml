@@ -2,9 +2,9 @@ name: Python Web Application CI
 
 on:
   push: #процесс будет запущен при каждом push (отправке изменений) в репозиторий
-    branches: [ "main" ] #триггер срабатывает только для ветки main.
+    branches: [ "master" ] #триггер срабатывает только для ветки master.
   pull_request: #при создании или обновлении pull request'ов
-    branches: [ "main" ]
+    branches: [ "master" ]
 
 jobs:
   build-and-test: #отвечает за сборку и тестирование приложения
